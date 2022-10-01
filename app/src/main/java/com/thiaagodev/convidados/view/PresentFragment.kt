@@ -1,4 +1,4 @@
-package com.thiaagodev.convidados.ui
+package com.thiaagodev.convidados.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.thiaagodev.convidados.databinding.FragmentPresentBinding
+import com.thiaagodev.convidados.viewmodel.PresentViewModel
 
 class PresentFragment : Fragment() {
 
