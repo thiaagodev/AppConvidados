@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
+import com.thiaagodev.convidados.model.GuestModel
 import com.thiaagodev.convidados.R
 import com.thiaagodev.convidados.databinding.ActivityGuestFormBinding
 import com.thiaagodev.convidados.viewmodel.GuestFormViewModel
@@ -29,7 +30,11 @@ class GuestFormActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(view: View) {
         when(view.id) {
             R.id.button_save -> {
-                TODO("")
+                val name = binding.editName.text.toString()
+                val presence = binding.radioPresent.isChecked
+
+                val guest = GuestModel(null, name, presence)
+                viewModel.insert(guest)
             }
         }
     }
