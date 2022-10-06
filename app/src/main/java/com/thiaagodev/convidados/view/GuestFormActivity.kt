@@ -35,6 +35,8 @@ class GuestFormActivity : AppCompatActivity(), View.OnClickListener {
 
                 val guest = GuestModel(null, name, presence)
                 viewModel.insert(guest)
+
+                finish()
             }
         }
     }
