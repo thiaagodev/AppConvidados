@@ -6,7 +6,7 @@ import com.thiaagodev.convidados.constants.DataBaseConstants
 import com.thiaagodev.convidados.model.GuestModel
 import java.lang.Exception
 
-class GuestRepository private constructor(context: Context){
+class GuestRepository private constructor(context: Context) {
 
     private val guestDataBase = GuestDataBase(context)
 
@@ -16,7 +16,7 @@ class GuestRepository private constructor(context: Context){
 
         fun getInstance(context: Context): GuestRepository {
 
-            if(!Companion::repository.isInitialized) {
+            if (!Companion::repository.isInitialized) {
                 repository = GuestRepository(context)
             }
 
@@ -25,21 +25,42 @@ class GuestRepository private constructor(context: Context){
     }
 
     fun insert(guest: GuestModel): Boolean {
-       return try {
-           val db = guestDataBase.writableDatabase
+        return try {
+            val db = guestDataBase.writableDatabase
 
-           val values = ContentValues()
-           val presence = if (guest.presence) 1 else 0
+            val values = ContentValues()
+            val presence = if (guest.presence) 1 else 0
 
-           values.put(DataBaseConstants.Guest.COLUMNS.NAME, guest.name)
-           values.put(DataBaseConstants.Guest.COLUMNS.PRESENCE, presence)
+            values.put(DataBaseConstants.Guest.COLUMNS.NAME, guest.name)
+            values.put(DataBaseConstants.Guest.COLUMNS.PRESENCE, presence)
 
 
-           db.insert(DataBaseConstants.Guest.TABLE_NAME, null, values)
+            db.insert(DataBaseConstants.Guest.TABLE_NAME, null, values)
 
-           true
-       } catch (e: Exception) {
-           false
-       }
+            true
+        } catch (e: Exception) {
+            false
+        }
+    }
+
+    fun update(guest: GuestModel): Boolean {
+
+        return try {
+            val db = guestDataBase.writableDatabase
+
+            val values = ContentValues()
+            val presence = if (guest.presence) 1 else 0
+            values.put(DataBaseConstants.Guest.COLUMNS.NAME, guest.name)
+            values.put(DataBaseConstants.Guest.COLUMNS.PRESENCE, presence)
+
+            val selection = "${DataBaseConstants.Guest.COLUMNS.ID} = ?"
+            val args = arrayOf(guest.id.toString())
+
+            db.update(DataBaseConstants.Guest.TABLE_NAME, values, selection, args)
+
+            true
+        } catch (e: Exception) {
+            false
+        }
     }
 }
