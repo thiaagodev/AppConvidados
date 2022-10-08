@@ -5,9 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.thiaagodev.convidados.databinding.FragmentAllGuestsBinding
+import com.thiaagodev.convidados.model.GuestModel
+import com.thiaagodev.convidados.view.adapter.GuestsAdapter
+import com.thiaagodev.convidados.view.listener.OnGuestListener
 import com.thiaagodev.convidados.viewmodel.AllGuestsViewModel
 
 class AllGuestsFragment : Fragment() {
@@ -16,22 +22,40 @@ class AllGuestsFragment : Fragment() {
     private lateinit var viewModel: AllGuestsViewModel
 
     private val binding get() = _binding!!
+    private val adapter = GuestsAdapter()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, b: Bundle?): View {
         viewModel = ViewModelProvider(this)[AllGuestsViewModel::class.java]
-
         _binding = FragmentAllGuestsBinding.inflate(inflater, container, false)
-        val root: View = binding.root
 
-        viewModel.getAll()
+        //Layout
+        binding.recyclerAllGuests.layoutManager = LinearLayoutManager(context)
+
+        // Adapter
+        binding.recyclerAllGuests.adapter = adapter
+
+        val listener = object: OnGuestListener {
+            override fun onClick(id: Int?) {
+
+            }
+
+            override fun onDelete(id: Int?) {
+                viewModel.delete(id)
+                viewModel.getAll()
+            }
+        }
+
+        adapter.attachListener(listener)
 
         observe()
 
-        return root
+        return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        viewModel.getAll()
     }
 
     override fun onDestroyView() {
@@ -41,8 +65,7 @@ class AllGuestsFragment : Fragment() {
 
     private fun observe() {
         viewModel.guests.observe(viewLifecycleOwner) {
-        val s = ""
-        // Lista de convidados
+            adapter.updateGuests(it)
         }
     }
 }
