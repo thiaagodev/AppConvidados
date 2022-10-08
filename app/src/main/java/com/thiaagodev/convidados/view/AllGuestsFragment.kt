@@ -4,14 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.thiaagodev.convidados.databinding.FragmentAllGuestsBinding
-import com.thiaagodev.convidados.model.GuestModel
 import com.thiaagodev.convidados.view.adapter.GuestsAdapter
 import com.thiaagodev.convidados.view.listener.OnGuestListener
 import com.thiaagodev.convidados.viewmodel.AllGuestsViewModel
