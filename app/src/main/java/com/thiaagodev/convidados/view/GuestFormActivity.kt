@@ -3,6 +3,7 @@ package com.thiaagodev.convidados.view
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.thiaagodev.convidados.model.GuestModel
@@ -41,8 +42,6 @@ class GuestFormActivity : AppCompatActivity(), View.OnClickListener {
 
                 val guest = GuestModel(guestId, name, presence)
                 viewModel.save(guest)
-
-                finish()
             }
         }
     }
@@ -59,6 +58,13 @@ class GuestFormActivity : AppCompatActivity(), View.OnClickListener {
                 binding.radioPresent.isChecked = true
             } else {
                 binding.radioAbsent.isChecked = true
+            }
+        }
+
+        viewModel.saveGuest.observe(this) {
+            if(it != "") {
+                Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+                finish()
             }
         }
     }
