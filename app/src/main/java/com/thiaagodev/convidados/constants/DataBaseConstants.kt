@@ -2,6 +2,7 @@ package com.thiaagodev.convidados.constants
 
 class DataBaseConstants private constructor(){
     object Guest {
+        const val ID = "guestId"
         const val TABLE_NAME = "Guest"
 
         object COLUMNS {
