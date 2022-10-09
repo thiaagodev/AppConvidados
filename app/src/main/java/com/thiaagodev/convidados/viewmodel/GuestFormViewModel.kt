@@ -14,16 +14,16 @@ class GuestFormViewModel(application: Application) : AndroidViewModel(applicatio
 
     val guest: LiveData<GuestModel?> = guestLiveData
 
-    fun insert(guest: GuestModel) {
-        repository.insert(guest)
+    fun save(guest: GuestModel) {
+        if(guest.id == null) {
+            repository.insert(guest)
+        } else {
+            repository.update(guest)
+        }
     }
 
     fun get(id: Int?) {
         guestLiveData.value = repository.get(id)
-    }
-
-    fun update(guest: GuestModel) {
-        repository.update(guest)
     }
 
 }

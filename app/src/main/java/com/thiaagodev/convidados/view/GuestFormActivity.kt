@@ -39,13 +39,8 @@ class GuestFormActivity : AppCompatActivity(), View.OnClickListener {
                 val name = binding.editName.text.toString()
                 val presence = binding.radioPresent.isChecked
 
-                if(guestId == null) {
-                    val guest = GuestModel(null, name, presence)
-                    viewModel.insert(guest)
-                } else {
-                    val guest = GuestModel(guestId, name, presence)
-                    viewModel.update(guest)
-                }
+                val guest = GuestModel(guestId, name, presence)
+                viewModel.save(guest)
 
                 finish()
             }
@@ -57,7 +52,7 @@ class GuestFormActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun observe() {
-        viewModel.guest.observe(this, Observer {
+        viewModel.guest.observe(this) {
             binding.editName.setText(it?.name)
 
             if (it?.presence == true) {
@@ -65,7 +60,7 @@ class GuestFormActivity : AppCompatActivity(), View.OnClickListener {
             } else {
                 binding.radioAbsent.isChecked = true
             }
-        })
+        }
     }
 
 
