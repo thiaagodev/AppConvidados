@@ -3,6 +3,7 @@ package com.thiaagodev.convidados.view
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.thiaagodev.convidados.model.GuestModel
 import com.thiaagodev.convidados.R
@@ -14,6 +15,7 @@ class GuestFormActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityGuestFormBinding
     private lateinit var viewModel: GuestFormViewModel
+    private var guestId: Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,8 +29,8 @@ class GuestFormActivity : AppCompatActivity(), View.OnClickListener {
 
         binding.radioPresent.isChecked = true
 
+        observe()
         loadData()
-
     }
 
     override fun onClick(view: View) {
@@ -37,8 +39,13 @@ class GuestFormActivity : AppCompatActivity(), View.OnClickListener {
                 val name = binding.editName.text.toString()
                 val presence = binding.radioPresent.isChecked
 
-                val guest = GuestModel(null, name, presence)
-                viewModel.insert(guest)
+                if(guestId == null) {
+                    val guest = GuestModel(null, name, presence)
+                    viewModel.insert(guest)
+                } else {
+                    val guest = GuestModel(guestId, name, presence)
+                    viewModel.update(guest)
+                }
 
                 finish()
             }
@@ -49,10 +56,23 @@ class GuestFormActivity : AppCompatActivity(), View.OnClickListener {
         binding.buttonSave.setOnClickListener(this)
     }
 
+    private fun observe() {
+        viewModel.guest.observe(this, Observer {
+            binding.editName.setText(it?.name)
+
+            if (it?.presence == true) {
+                binding.radioPresent.isChecked = true
+            } else {
+                binding.radioAbsent.isChecked = true
+            }
+        })
+    }
+
+
     private fun loadData() {
         val bundle = intent.extras
 
-        val guestId = bundle?.getInt(DataBaseConstants.Guest.ID)
+        guestId = bundle?.getInt(DataBaseConstants.Guest.ID)
 
         guestId?.let {
             viewModel.get(guestId)

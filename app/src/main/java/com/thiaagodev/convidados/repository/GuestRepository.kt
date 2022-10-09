@@ -127,7 +127,7 @@ class GuestRepository private constructor(context: Context) {
         }
     }
 
-    fun get(id: Int): GuestModel? {
+    fun get(id: Int?): GuestModel? {
 
         var guest: GuestModel? = null
 
