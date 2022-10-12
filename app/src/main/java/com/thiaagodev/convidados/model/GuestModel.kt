@@ -9,12 +9,12 @@ class GuestModel {
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo
-    val id: Int? = null
+    var id: Int? = null
 
     @ColumnInfo
-    val name: String = ""
+    var name: String = ""
 
     @ColumnInfo
-    val presence: Boolean = false
+    var presence: Boolean = false
 }
 
