@@ -22,7 +22,6 @@ abstract class GuestDataBase() : RoomDatabase() {
                 synchronized(GuestDataBase::class) {
                     INSTANCE = Room.databaseBuilder(context, GuestDataBase::class.java, "guestdb")
                         .addMigrations(MIGRATION_1_2)
-                        .allowMainThreadQueries()
                         .build()
                 }
             }

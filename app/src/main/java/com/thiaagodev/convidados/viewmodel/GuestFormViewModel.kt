@@ -4,8 +4,10 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.thiaagodev.convidados.model.GuestModel
 import com.thiaagodev.convidados.repository.GuestRepository
+import kotlinx.coroutines.launch
 
 class GuestFormViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -17,23 +19,27 @@ class GuestFormViewModel(application: Application) : AndroidViewModel(applicatio
     val saveGuest: LiveData<String> = _saveGuest
 
     fun save(guest: GuestModel) {
-        if (guest.id == null) {
-            if (repository.insert(guest)) {
-                _saveGuest.value = "Inserção com sucesso"
+        viewModelScope.launch {
+            if (guest.id == null) {
+                if (repository.insert(guest)) {
+                    _saveGuest.value = "Inserção com sucesso"
+                } else {
+                    _saveGuest.value = "Falha ao salvar convidado"
+                }
             } else {
-                _saveGuest.value = "Falha ao salvar convidado"
-            }
-        } else {
-            if (repository.update(guest)) {
-                _saveGuest.value = "Atualização com sucesso"
-            } else {
-                _saveGuest.value = "Falha ao salvar convidado"
+                if (repository.update(guest)) {
+                    _saveGuest.value = "Atualização com sucesso"
+                } else {
+                    _saveGuest.value = "Falha ao salvar convidado"
+                }
             }
         }
     }
 
     fun get(id: Int?) {
-        guestLiveData.value = repository.get(id)
+        viewModelScope.launch {
+            guestLiveData.value = repository.get(id)
+        }
     }
 
 }

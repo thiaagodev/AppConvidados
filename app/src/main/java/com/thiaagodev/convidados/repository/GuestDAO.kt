@@ -7,20 +7,20 @@ import com.thiaagodev.convidados.model.GuestModel
 interface GuestDAO {
 
     @Insert
-    fun insert(guest: GuestModel) : Long
+    suspend fun insert(guest: GuestModel) : Long
 
     @Update
-    fun update(guest: GuestModel) : Int
+    suspend fun update(guest: GuestModel) : Int
 
     @Delete
-    fun delete(guest: GuestModel?)
+    suspend fun delete(guest: GuestModel?)
 
     @Query("SELECT * FROM Guest WHERE id = :id")
-    fun get(id: Int?): GuestModel?
+    suspend fun get(id: Int?): GuestModel?
 
     @Query("SELECT * FROM Guest")
-    fun getAll(): List<GuestModel>
+    suspend fun getAll(): List<GuestModel>
 
     @Query("SELECT * FROM Guest WHERE presence = :presence")
-    fun getByPresence(presence: Int): List<GuestModel>
+    suspend fun getByPresence(presence: Int): List<GuestModel>
 }
